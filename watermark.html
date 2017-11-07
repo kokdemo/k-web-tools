@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta author="@kokdemo">
+    <title>KWatermark-图片水印添加</title>
+    <link href="http://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .mockup {
+            position: relative;
+            background-color: #ccc;
+            width: auto;
+            height: auto;
+            padding: 0;
+            border: 20px solid #ccc;
+            box-sizing: content-box;
+        }
+
+        .help {
+            background-color: #ccc;
+            position: absolute;
+            opacity: 0.8;
+            top: 0;
+            width: 640px;
+            height: 640px;
+            transition: opacity 0.7s;
+        }
+
+        .help p {
+            font-size: 2.5em;
+            display: inline-block;
+            padding-top: 250px;
+            width: 100%;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .mockup:hover .help {
+            opacity: 0;
+            transition: opacity 0.7s;
+        }
+
+        #canvas {
+            display: block;
+            margin: 0 auto;
+        }
+
+        #upload {
+            position: absolute;
+            opacity: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .btns button {
+            width: 100%;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+        <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                  <!-- Brand and toggle get grouped for better mobile display -->
+                  <div class="navbar-header">
+                    <a class="navbar-brand" href="#">K-web-tools</a>
+                    <p class="navbar-text">一些在线的小工具</p>
+                  </div>
+              
+                  <!-- Collect the nav links, forms, and other content for toggling -->
+                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                      <li class=""><a href="./index.html">mockup</a></li>
+                      <li class=""><a href="./tag.html">tag</a></li>
+                      <li class="active"><a href="./watermark.html">watermark</a></li>
+                      <li class=""><a href="https://github.com/kokdemo/k-web-tools">github地址</a></li>
+                    </ul>
+                  </div><!-- /.navbar-collapse -->
+                </div><!-- /.container-fluid -->
+              </nav>
+<div class="container">
+    <div class="row">
+        <canvas width="640" height="640" id="origin" style="display: none;"></canvas>
+        <div id="canvasDom" class="mockup col-xs-6">
+            <div class="help" id="help"><p>点击这里，上传适合大小的优惠券图片</p></div>
+            <canvas width="640" height="640" id="canvas"></canvas>
+            <input type="file" id="upload" v-on:change="uploadPic('canvas','upload')">
+        </div>
+        <div class="btns col-xs-2">
+            <div class="form-group">
+                <label for="couponID" class=" control-label">优惠券号码</label>
+                <textarea id="couponID" class="form-control" rows="3" v-model="couponIDstr"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="positionX" class=" control-label">横坐标<span>最大{{coupon.size[0]}}</span></label>
+                <input id="positionX" class="form-control" v-model="position[0]">
+            </div>
+            <div class="form-group">
+                <label for="positionY" class=" control-label">纵坐标<span>最大{{coupon.size[1]}}</span></label>
+                <input id="positionY" class="form-control" v-model="position[1]">
+            </div>
+            <div class="form-group">
+                <label for="size" class=" control-label">字体大小</label>
+                <input id="size" class="form-control" v-model="fonts.size">
+            </div>
+            <div class="form-group">
+                <label for="color" class=" control-label">字体颜色</label>
+                <input id="color" class="form-control" v-model="fonts.color">
+            </div>
+            <div class="form-group">
+                <label for="family" class=" control-label">字体类型</label>
+                <input id="family" class="form-control" v-model="fonts.family">
+            </div>
+            <div class="form-group">
+                <label for="weight" class=" control-label">字体粗细</label>
+                <select id="weight" class="form-control" v-model="fonts.weight">
+                    <option>normal</option>
+                    <option>bold</option>
+                    <option>bolder</option>
+                    <option>lighter</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="style" class=" control-label">字体样式</label>
+                <select id="style" class="form-control" v-model="fonts.style">
+                    <option>normal</option>
+                    <option>italic</option>
+                    <option>oblique</option>
+                </select>
+            </div>
+            <button id="prebulid" class="btn btn-success"
+                    v-on:click="addConponID(couponID[0], position,'canvas')">预览效果
+            </button>
+            <button id="savePNG" class="btn btn-primary"
+                    v-on:click="makeConponPic('png')">保存为png
+            </button>
+            <button id="saveJPG" class="btn btn-primary"
+                    v-on:click="makeConponPic('jpg')">保存为jpg
+            </button>
+        </div>
+    </div>
+</div>
+<script src="http://cdn.bootcss.com/vue/1.0.16/vue.js"></script>
+<script>
+    var coupon = new Vue({
+        el: 'body',
+        data: {
+            coupon: {
+                size: [0, 0]
+            },
+            position: [0, 0],
+            fonts: {
+                name: '',
+                size: 30,
+                color: '000000',
+                family :'Arial',
+                weight:'700',
+                style:'normal'
+            },
+            couponIDstr: '',
+            canvas: ''
+        },
+        computed: {
+            couponID: function () {
+                console.info(this.couponIDstr.split("\n"));
+                return this.couponIDstr.split("\n");
+            }
+        },
+        methods: {
+            // 加载图片
+            loadPic: function (canvas, src) {
+                var background = new Image();
+                background.onload = function () {
+                    coupon.coupon.size[0] = (background.width);
+                    coupon.coupon.size[1] = (background.height);
+                    console.info(coupon.coupon);
+                    var cv = document.getElementById('canvas');
+                    var ctx = cv.getContext('2d');
+                    var origin = document.getElementById('origin');
+                    var octx = cv.getContext('2d');
+                    //change canvas size to pic size
+                    origin.width = coupon.coupon.size[0];
+                    origin.height = coupon.coupon.size[1];
+                    cv.width = coupon.coupon.size[0];
+                    cv.height = coupon.coupon.size[1];
+                    //load pic to canvas
+                    ctx.drawImage(background, 0, 0, background.width, background.height);
+                    octx.drawImage(background, 0, 0, background.width, background.height);
+                    coupon.canvas = background;
+                    ctx.save();
+                };
+                background.onerror = function () {
+                    window.alert('图片加载失败，请重试');
+                };
+                background.src = src;
+            },
+            uploadPic: function (canvas, upload) {
+                var file = document.getElementById('upload');
+                var ext = file.value.substring(file.value.lastIndexOf(".") + 1).toLowerCase();
+                console.info(ext);
+                if (ext != 'png' && ext != 'jpg' && ext != 'jpeg') {
+                    console.info('false');
+                    return;
+                }
+                coupon.loadPic(canvas, URL.createObjectURL(file.files[0]));
+                //上传完图片之后，删除介绍
+                if (document.getElementById('help')) {
+                    document.getElementById('canvasDom').removeChild(document.getElementById('help'));
+                }
+            },
+            addConponID: function (couponid, position, canvas) {
+                var cv = document.getElementById('canvas');
+                var ctx = cv.getContext('2d');
+                var background = coupon.canvas;
+                ctx.drawImage(background, 0, 0, background.width, background.height);
+                var font = coupon.fonts;
+                console.info(font);
+                ctx.fillStyle = '#'+font.color;
+                ctx.font = font.style+' '+font.size+' '+font.family+' '+font.weight;
+                ctx.fillText(couponid, position[0], position[1]);
+            },
+            makeConponPic:function(type){
+                var couponIDs = coupon.couponID;
+                var dom = '';
+                for(var i= 0,length = couponIDs.length;i<length;i++){
+                    var couponID = couponIDs[i];
+                    this.addConponID(couponID,coupon.position,'canvas');
+                    var a = document.createElement('a');
+                    a.download = 'KWatermark_' + (new Date()).getTime() +'.'+ type;
+                    a.href = document.getElementById('canvas').toDataURL();
+                    a.click();
+                }
+            }
+            ,
+            downloadPic: function (canvas, type) {
+                var filename = 'KWatermark_' + (new Date()).getTime() + '.' + type;
+                var cv = document.getElementById(canvas);
+                var imgData = cv.toDataURL(type);
+                type = type.toLowerCase().replace(/jpg/i, 'jpeg');
+                var r = 'image/' + type.match(/png|jpeg|bmp|gif/)[0];
+                imgData = imgData.replace(r, 'image/octet-stream');
+                var save_link = document.createElementNS('http://www.w3.org/1999/xhtml', 'a');
+                save_link.href = imgData;
+                save_link.download = filename;
+                var event = document.createEvent('MouseEvents');
+                event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+                save_link.dispatchEvent(event);
+            }
+        }
+    });
+</script>
+</body>
+</html>
