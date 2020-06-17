@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta author="@kokdemo">
+    <title>k-web-tools 月计划</title>
+    <link href="https://unpkg.com/tailwindcss@1.4.6/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+    </style>
+</head>
+
+<body class="w-full">
+    <table class="w-full border-collapse border-2 border-gray-500" id="app">
+        
+        <thead>
+            <tr>
+                <th class="border border-gray-400 px-4 py-2">日期</th>
+                <th class="border border-gray-400 px-4 py-2"><input type="text" class="w-full"/></th>
+                <th class="border border-gray-400 px-4 py-2"><input type="text" class="w-full"/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="border border-gray-400 px-4 py-2"><input type="text" placeholder="起始日期" v-model="startDate" class="w-full"/></td>
+                <td class="border border-gray-400 px-4 py-2"></td>
+                <td class="border border-gray-400 px-4 py-2"></td>
+            </tr>
+            <tr v-for="day in dateList">
+                <td class="border border-gray-400 px-4 py-2 text-center">{{day}}</td>
+                <td class="border border-gray-400 px-4 py-2"></td>
+                <td class="border border-gray-400 px-4 py-2"></td>
+            </tr>
+        </tbody>
+    </table>
+    <script src="https://unpkg.com/vue@2.6.11/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.8.28/dayjs.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data:{
+                startDate:'2020-01-01',
+            },
+            computed: {
+                dateList(){
+                    let start = dayjs(this.startDate)
+                    let res = []
+                    for(let i=1;i<30;i++){
+                        res.push(start.add(i,'day').format('MM-DD'))
+                    }
+                    return res
+                }
+            },
+          })
+    </script>
+</body>
+
+</html>
