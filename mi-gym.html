@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<!-- 此页面仅用于演示页面效果和测试 -->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no" searchtype="map">
+    <!-- <link rel="icon" href="/img/favicon.ico" type="image/x-icon" /> -->
+    <link rel="apple-touch-icon-precomposed"
+        href="https://pic1-s.styd.cn/saas_default_brand_logo?imageView2/1/w/240/h/240">
+    <title>小米科技园健身房</title>
+    <link href="http://s4.styd.cn/css/m/themes/phantom_black.css" rel="stylesheet">
+    <link href="http://s1.styd.cn/css/m/user/default.css?version=1594274915" rel="stylesheet">
+    <link href="http://s4.styd.cn/css/component/swiper.min.css?version=1594274915" rel="stylesheet">
+</head>
+
+<body>
+    <!-- m/layouts/main -->
+    <div id="app" class="wrap">
+        <!--/top_menu-->
+        <section class="main_content">
+            <div class="user_brief t-background-gradient">
+                <a v-on:click="switchInput()" class="content">
+                    <div class="avatar">
+                        <img
+                            src="https://source.unsplash.com/random/200x200">
+                    </div>
+                    <div class="info">
+                        <p class="name">
+                            {{name}} </p>
+                        <p class="tel">电话：{{phone}}</p>
+                    </div>
+                </a>
+                <i class="icon_arrow"></i>
+                <div v-show="ifShowInput">
+                    <input placeholder="填昵称" v-model="name">
+                    <input placeholder="填电话" v-model="phone">
+                </div>
+            </div>
+
+
+            <div class="default_order">
+                <div class="swiper-container swiper">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="order_list">
+                                <p class="order_status">已签到</p>
+                                <p class="order_date">
+                                    <span class="date">{{today}}</span>
+                                    <span class="time">{{todayWeekDay}} 11:30-15:30</span>
+                                </p>
+                                <p class="order_name">
+                                    <i class="icon_type team">团课</i>
+                                    【中午】小米健身房入场（下沉广场） </p>
+                                <p class="order_card">
+                                    [0元]小米员工入场卡 <b>1</b> 次 </p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="order_list">
+                                <p class="order_status">已签到</p>
+                                <p class="order_date">
+                                    <span class="date">{{today}}</span>
+                                    <span class="time">{{todayWeekDay}} 18:00-19:00</span>
+                                </p>
+                                <p class="order_name">
+                                    <i class="icon_type team">团课</i>
+                                    小米健身房入场（下沉广场） </p>
+                                <p class="order_card">
+                                    [0元]小米员工入场卡 <b>1</b> 次 </p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="order_list">
+                                <p class="order_status">已签到</p>
+                                <p class="order_date">
+                                    <span class="date">{{today}}</span>
+                                    <span class="time">{{todayWeekDay}} 19:00-20:00</span>
+                                </p>
+                                <p class="order_name">
+                                    <i class="icon_type team">团课</i>
+                                    小米健身房入场（下沉广场） </p>
+                                <p class="order_card">
+                                    [0元]小米员工入场卡 <b>1</b> 次 </p>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="order_list">
+                                <p class="order_status">已签到</p>
+                                <p class="order_date">
+                                    <span class="date">{{yesterday}}</span>
+                                    <span class="time">{{yesterdayWeekDay}} 11:30-15:30</span>
+                                </p>
+                                <p class="order_name">
+                                    <i class="icon_type team">团课</i>
+                                    【中午】小米健身房入场（下沉广场） </p>
+                                <p class="order_card">
+                                    [0元]小米员工入场卡 <b>1</b> 次 </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+
+            <ul class="default_list">
+                <li>
+                    <a href="https://www.styd.cn/smart_device/user/get_qrcode?user_type=user&usn=ad285710">
+                        <i class="list_icon icon_9"></i>
+                        <p class="list_name">智能动态二维码</p>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/m/ad285710/user/order">
+                        <i class="list_icon icon_1"></i>
+                        <p class="list_name">我的预约</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/m/ad285710/user/card">
+                        <i class="list_icon icon_2"></i>
+                        <p class="list_name">我的会员卡</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="/m/ad285710/user/online_course">
+                        <i class="list_icon icon_vod"></i>
+                        <p class="list_name">我的视频课程</p>
+                    </a>
+                </li>
+            </ul>
+            <ul class="default_list">
+                <li>
+                    <a href="/m/ad285710/user/measure">
+                        <i class="list_icon icon_3"></i>
+                        <p class="list_name">体测信息</p>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/m/ad285710/user/plan">
+                        <i class="list_icon icon_4"></i>
+                        <p class="list_name">训练建议</p>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="/m/ad285710/user/report">
+                        <i class="list_icon icon_5"></i>
+                        <p class="list_name">健身报告</p>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="default_list">
+
+                <li>
+                    <a href="/m/ad285710/user/coupon">
+                        <i class="list_icon icon_7"></i>
+                        <p class="list_name">我的券包</p>
+                    </a>
+                </li>
+
+            </ul>
+
+        </section>
+        <footer class="surprise">
+            <p class="name">欢迎您，kok</p>
+            <p class="copyright">由<a href="https://www.styd.cn?src_channel=member_mobile-ad285710"
+                    target="_blank">三体云动</a>提供技术支持</p>
+        </footer>
+        <nav class="foot_bar ">
+
+            <ul>
+                <li class="main"><a href="/m/ad285710/shop/513773222">首页</a></li>
+                <li class="course"><a href="/m/ad285710/default/index?type=1">课程</a></li>
+                <li class="card"><a href="/m/ad285710/product/card">卡服务</a></li>
+                <li class="my"><a href="/m/ad285710/user/default" class="current"><span>我的</span></a></li>
+            </ul>
+        </nav>
+    </div>
+    <!-- m/layouts/footer start -->
+    <!--新人专享-->
+    <div class="new_welfare" style="display:none;">
+        <div class="inner_wrap">
+            <a href="javascript:void(0);">
+                <div class="inner">
+                    <span class="text_icon t-background-color">新</span>
+                    <p class="t1">新人专享体验卡</p>
+                    <p class="t2">可约课3次&nbsp;&nbsp;&nbsp;200元</p>
+                    <span class="btn_buy t-background-color">购买</span>
+                </div>
+            </a>
+            <span class="close">&times;</span>
+        </div>
+    </div>
+
+    <!-- m/layouts/footer end -->
+
+    <!-- <script src="http://s2.styd.cn/js/vendor/sentry-reporter.min.js?version=1594274915"></script> -->
+    <script src="http://s3.styd.cn/js/vendor/jquery.js"></script>
+    <!-- <script src="http://s3.styd.cn/js/m/common.js?version=1594274915"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.8.29/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.8.29/locale/zh-cn.js"></script>
+    <script src="http://s2.styd.cn/js/component/swiper.min.js?version=1594274915"></script>
+    <script src="http://s1.styd.cn/js/m/user/default.js?version=1594274915"></script> <!-- m/layouts/tracker start -->
+    <script>
+        var vm = new Vue({
+            el:"#app",
+            beforeMount:function () {
+                dayjs.locale('zh-cn')
+                var todayDate = dayjs()
+                var yesterdayDate = dayjs().subtract(1, 'day')
+                this.today = dayjs(todayDate).format('MM-DD')
+                this.todayWeekDay = dayjs(todayDate).format('ddd')
+                this.yesterday = dayjs(yesterdayDate).format('MM-DD')
+                this.yesterdayWeekDay = dayjs(yesterdayDate).format('ddd')
+            },
+            data: {
+                today : '',
+                todayWeekDay:'',
+                yesterday:'',
+                yesterdayWeekDay:'',
+                name:'',
+                phone:'',
+                ifShowInput:false
+            },
+            methods:{
+                switchInput:function() {
+                    this.ifShowInput = !this.ifShowInput
+                }
+            }
+        })
+    </script>
+    <!-- m/layouts/tracker end -->
+</body>
+
+</html>
